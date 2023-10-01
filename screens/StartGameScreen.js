@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Alert, StyleSheet, TextInput, View } from "react-native";
 import PrimaryBtn from "../components/UI/PrimaryBtn";
 import Colors from "../utils/colors";
+import Title from "../components/UI/Title";
+import { Text } from "react-native";
+import Card from "../components/UI/Card";
 
 const StartGameScreen = ({ onStart }) => {
   const [enteredNum, setEnteredNum] = useState("");
@@ -23,25 +26,29 @@ const StartGameScreen = ({ onStart }) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.inpElement}
-        maxLength={2}
-        keyboardType="number-pad"
-        autoCapitalize="none"
-        autoCorrect={false}
-        value={enteredNum}
-        onChangeText={(num) => setEnteredNum(num)}
-      />
+    <View style={styles.screenContainer}>
+      <Title>Guess Number Game</Title>
+      <Card>
+        <Text style={styles.titletext}>Enter a number</Text>
+        <TextInput
+          style={styles.inpElement}
+          maxLength={2}
+          keyboardType="number-pad"
+          autoCapitalize="none"
+          autoCorrect={false}
+          value={enteredNum}
+          onChangeText={(num) => setEnteredNum(num)}
+        />
 
-      <View style={styles.btnContainer}>
-        <View style={{ flex: 1 }}>
-          <PrimaryBtn>Reset</PrimaryBtn>
+        <View style={styles.btnContainer}>
+          <View style={{ flex: 1 }}>
+            <PrimaryBtn>Reset</PrimaryBtn>
+          </View>
+          <View style={{ flex: 1 }}>
+            <PrimaryBtn onPress={confirmInput}>Confirm</PrimaryBtn>
+          </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <PrimaryBtn onPress={confirmInput}>Confirm</PrimaryBtn>
-        </View>
-      </View>
+      </Card>
     </View>
   );
 };
@@ -49,22 +56,13 @@ const StartGameScreen = ({ onStart }) => {
 export default StartGameScreen;
 
 const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    marginTop: 100,
+  },
   btnContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  inputContainer: {
-    marginHorizontal: 20,
-    marginTop: 100,
-    padding: 16,
-    backgroundColor: Colors.primary800,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
-    shadowOpacity: 0.25,
-    alignItems: "center",
   },
 
   inpElement: {
@@ -77,5 +75,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     marginVertical: 8,
     fontWeight: "bold",
+    fontFamily: "open-sans-bold",
+  },
+
+  titletext: {
+    fontSize: 24,
+    color: Colors.accent500,
+    fontWeight: "bold",
+    fontFamily: "open-sans-bold",
   },
 });

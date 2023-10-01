@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import Title from "../components/UI/Title";
 import NumberContainer from "../components/Game/NumberContainer";
 import PrimaryBtn from "../components/UI/PrimaryBtn";
+import Card from "../components/UI/Card";
+import Colors from "../utils/colors";
+import { Ionicons } from "@expo/vector-icons";
 
 let minBoundary = 1;
 let maxBoundary = 100;
@@ -16,7 +19,7 @@ const generateRandom = (min, max, exclude) => {
   return num;
 };
 
-const GameScreen = ({ chosenNum }) => {
+const GameScreen = ({ chosenNum, gameOver }) => {
   const [currentGuess, setCurrentGuess] = useState(
     generateRandom(minBoundary, maxBoundary, chosenNum)
   );
@@ -42,21 +45,31 @@ const GameScreen = ({ chosenNum }) => {
     setCurrentGuess(newGuess);
   };
 
+  useEffect(() => {
+    if (currentGuess == chosenNum) {
+      gameOver();
+    }
+  }, [currentGuess, chosenNum, gameOver]);
+
   return (
     <View style={styles.screen}>
       <Title>Opponent's guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or Lower?</Text>
-        <View>
-          <PrimaryBtn onPress={nextGuessHandler.bind(this, "lower")}>
-            -
-          </PrimaryBtn>
-          <PrimaryBtn onPress={nextGuessHandler.bind(this, "higher")}>
-            +
-          </PrimaryBtn>
+      <Card>
+        <Text style={styles.cardTitle}>Higher or Lower?</Text>
+        <View style={{ flexDirection: "row", gap: 4, marginTop: 20 }}>
+          <View style={{ flex: 1 }}>
+            <PrimaryBtn onPress={nextGuessHandler.bind(this, "lower")}>
+              <Ionicons name="md-remove" size={24} color="white" />
+            </PrimaryBtn>
+          </View>
+          <View style={{ flex: 1 }}>
+            <PrimaryBtn onPress={nextGuessHandler.bind(this, "higher")}>
+              <Ionicons name="md-add" size={24} color="white" />
+            </PrimaryBtn>
+          </View>
         </View>
-      </View>
+      </Card>
     </View>
   );
 };
@@ -68,5 +81,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     marginTop: 20,
+  },
+  cardTitle: {
+    color: Colors.accent500,
+    fontSize: 18,
+    fontWeight: "600",
+    fontFamily: "open-sans",
   },
 });

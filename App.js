@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
 import GameScreen from "./screens/GameScreen";
 import Colors from "./utils/colors";
+import GameOverScreen from "./screens/GameOverScreen";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const [userNum, setUserNum] = useState(null);
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  const [fontsLoaded, fontError] = useFonts({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   const startGameHandler = (pickedNum) => {
     setUserNum(pickedNum);
@@ -16,6 +37,7 @@ export default function App() {
     <LinearGradient
       colors={[Colors.primary700, Colors.accent500]}
       style={styles.rootBg}
+      onLayout={onLayoutRootView}
     >
       <ImageBackground
         source={require("./assets/images/background.png")}
@@ -24,8 +46,13 @@ export default function App() {
         imageStyle={styles.bgImg}
       >
         <SafeAreaView style={styles.rootBg}>
-          {userNum ? (
-            <GameScreen chosenNum={userNum} />
+          {isGameOver ? (
+            <GameOverScreen />
+          ) : userNum ? (
+            <GameScreen
+              chosenNum={userNum}
+              gameOver={() => setIsGameOver(true)}
+            />
           ) : (
             <StartGameScreen onStart={startGameHandler} />
           )}

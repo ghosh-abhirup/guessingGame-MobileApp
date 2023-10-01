@@ -13,5 +13,6 @@ const styles = StyleSheet.create({
     color: "white",
     paddingVertical: 10,
     textAlign: "center",
+    fontFamily: "open-sans-bold",
   },
 });
