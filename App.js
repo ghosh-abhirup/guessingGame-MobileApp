@@ -13,6 +13,7 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const [userNum, setUserNum] = useState(null);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [round, setRound] = useState(0);
 
   const [fontsLoaded, fontError] = useFonts({
     "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
@@ -33,6 +34,12 @@ export default function App() {
     setUserNum(pickedNum);
   };
 
+  const startNewGameHandler = () => {
+    setUserNum(null);
+    setRound(0);
+    setIsGameOver(false);
+  };
+
   return (
     <LinearGradient
       colors={[Colors.primary700, Colors.accent500]}
@@ -47,11 +54,17 @@ export default function App() {
       >
         <SafeAreaView style={styles.rootBg}>
           {isGameOver ? (
-            <GameOverScreen />
+            // <GameOverScreen chosenNum={userNum} roundsNum={} startNewGame={}/>
+            <GameOverScreen
+              chosenNum={userNum}
+              roundsNum={round}
+              startNewGame={startNewGameHandler}
+            />
           ) : userNum ? (
             <GameScreen
               chosenNum={userNum}
               gameOver={() => setIsGameOver(true)}
+              increaseRounds={() => setRound((prev) => prev + 1)}
             />
           ) : (
             <StartGameScreen onStart={startGameHandler} />

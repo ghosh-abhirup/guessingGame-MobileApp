@@ -19,10 +19,14 @@ const generateRandom = (min, max, exclude) => {
   return num;
 };
 
-const GameScreen = ({ chosenNum, gameOver }) => {
+const GameScreen = ({ chosenNum, gameOver, increaseRounds }) => {
   const [currentGuess, setCurrentGuess] = useState(
-    generateRandom(minBoundary, maxBoundary, chosenNum)
+    generateRandom(1, 100, chosenNum)
   );
+
+  useEffect(() => {
+    (minBoundary = 1), (maxBoundary = 100);
+  }, []);
 
   const nextGuessHandler = (command) => {
     if (
@@ -41,6 +45,7 @@ const GameScreen = ({ chosenNum, gameOver }) => {
       maxBoundary = currentGuess;
     }
 
+    increaseRounds();
     const newGuess = generateRandom(minBoundary, maxBoundary, currentGuess);
     setCurrentGuess(newGuess);
   };
