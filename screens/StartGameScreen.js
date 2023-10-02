@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
+import {
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import PrimaryBtn from "../components/UI/PrimaryBtn";
 import Colors from "../utils/colors";
 import Title from "../components/UI/Title";
@@ -8,6 +16,7 @@ import Card from "../components/UI/Card";
 
 const StartGameScreen = ({ onStart }) => {
   const [enteredNum, setEnteredNum] = useState("");
+  const { width, height } = useWindowDimensions();
 
   const confirmInput = () => {
     const chosenNum = parseInt(enteredNum);
@@ -25,31 +34,37 @@ const StartGameScreen = ({ onStart }) => {
     onStart(enteredNum);
   };
 
-  return (
-    <View style={styles.screenContainer}>
-      <Title>Guess Number Game</Title>
-      <Card>
-        <Text style={styles.titletext}>Enter a number</Text>
-        <TextInput
-          style={styles.inpElement}
-          maxLength={2}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          value={enteredNum}
-          onChangeText={(num) => setEnteredNum(num)}
-        />
+  const marginTop = height < 380 ? 30 : 100;
 
-        <View style={styles.btnContainer}>
-          <View style={{ flex: 1 }}>
-            <PrimaryBtn>Reset</PrimaryBtn>
-          </View>
-          <View style={{ flex: 1 }}>
-            <PrimaryBtn onPress={confirmInput}>Confirm</PrimaryBtn>
-          </View>
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="position">
+        <View style={[styles.screenContainer, { marginTop: marginTop }]}>
+          <Title>Guess Number Game</Title>
+          <Card>
+            <Text style={styles.titletext}>Enter a number</Text>
+            <TextInput
+              style={styles.inpElement}
+              maxLength={2}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={enteredNum}
+              onChangeText={(num) => setEnteredNum(num)}
+            />
+
+            <View style={styles.btnContainer}>
+              <View style={{ flex: 1 }}>
+                <PrimaryBtn>Reset</PrimaryBtn>
+              </View>
+              <View style={{ flex: 1 }}>
+                <PrimaryBtn onPress={confirmInput}>Confirm</PrimaryBtn>
+              </View>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 
@@ -58,7 +73,6 @@ export default StartGameScreen;
 const styles = StyleSheet.create({
   screenContainer: {
     flex: 1,
-    marginTop: 100,
   },
   btnContainer: {
     flexDirection: "row",

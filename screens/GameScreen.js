@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 import Title from "../components/UI/Title";
 import NumberContainer from "../components/Game/NumberContainer";
 import PrimaryBtn from "../components/UI/PrimaryBtn";
@@ -57,25 +57,27 @@ const GameScreen = ({ chosenNum, gameOver, increaseRounds }) => {
   }, [currentGuess, chosenNum, gameOver]);
 
   return (
-    <View style={styles.screen}>
-      <Title>Opponent's guess</Title>
-      <NumberContainer>{currentGuess}</NumberContainer>
-      <Card>
-        <Text style={styles.cardTitle}>Higher or Lower?</Text>
-        <View style={{ flexDirection: "row", gap: 4, marginTop: 20 }}>
-          <View style={{ flex: 1 }}>
-            <PrimaryBtn onPress={nextGuessHandler.bind(this, "lower")}>
-              <Ionicons name="md-remove" size={24} color="white" />
-            </PrimaryBtn>
+    <ScrollView style={{ flex: 1 }}>
+      <View style={styles.screen}>
+        <Title>Opponent's guess</Title>
+        <NumberContainer>{currentGuess}</NumberContainer>
+        <Card>
+          <Text style={styles.cardTitle}>Higher or Lower?</Text>
+          <View style={{ flexDirection: "row", gap: 4, marginTop: 20 }}>
+            <View style={{ flex: 1 }}>
+              <PrimaryBtn onPress={nextGuessHandler.bind(this, "lower")}>
+                <Ionicons name="md-remove" size={24} color="white" />
+              </PrimaryBtn>
+            </View>
+            <View style={{ flex: 1 }}>
+              <PrimaryBtn onPress={nextGuessHandler.bind(this, "higher")}>
+                <Ionicons name="md-add" size={24} color="white" />
+              </PrimaryBtn>
+            </View>
           </View>
-          <View style={{ flex: 1 }}>
-            <PrimaryBtn onPress={nextGuessHandler.bind(this, "higher")}>
-              <Ionicons name="md-add" size={24} color="white" />
-            </PrimaryBtn>
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </ScrollView>
   );
 };
 

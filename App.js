@@ -7,6 +7,7 @@ import Colors from "./utils/colors";
 import GameOverScreen from "./screens/GameOverScreen";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,37 +42,40 @@ export default function App() {
   };
 
   return (
-    <LinearGradient
-      colors={[Colors.primary700, Colors.accent500]}
-      style={styles.rootBg}
-      onLayout={onLayoutRootView}
-    >
-      <ImageBackground
-        source={require("./assets/images/background.png")}
-        resizeMethod="auto"
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[Colors.primary700, Colors.accent500]}
         style={styles.rootBg}
-        imageStyle={styles.bgImg}
+        onLayout={onLayoutRootView}
       >
-        <SafeAreaView style={styles.rootBg}>
-          {isGameOver ? (
-            // <GameOverScreen chosenNum={userNum} roundsNum={} startNewGame={}/>
-            <GameOverScreen
-              chosenNum={userNum}
-              roundsNum={round}
-              startNewGame={startNewGameHandler}
-            />
-          ) : userNum ? (
-            <GameScreen
-              chosenNum={userNum}
-              gameOver={() => setIsGameOver(true)}
-              increaseRounds={() => setRound((prev) => prev + 1)}
-            />
-          ) : (
-            <StartGameScreen onStart={startGameHandler} />
-          )}
-        </SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/images/background.png")}
+          resizeMethod="auto"
+          style={styles.rootBg}
+          imageStyle={styles.bgImg}
+        >
+          <SafeAreaView style={styles.rootBg}>
+            {isGameOver ? (
+              // <GameOverScreen chosenNum={userNum} roundsNum={} startNewGame={}/>
+              <GameOverScreen
+                chosenNum={userNum}
+                roundsNum={round}
+                startNewGame={startNewGameHandler}
+              />
+            ) : userNum ? (
+              <GameScreen
+                chosenNum={userNum}
+                gameOver={() => setIsGameOver(true)}
+                increaseRounds={() => setRound((prev) => prev + 1)}
+              />
+            ) : (
+              <StartGameScreen onStart={startGameHandler} />
+            )}
+          </SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 
